@@ -1,5 +1,6 @@
 /* ==========================================================================
    Kheian Roldan Portfolio & Resume Interactive Engine
+   Mobile-Optimized & Touch Responsive
    ========================================================================== */
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -98,6 +99,7 @@ let soundEnabled = true;
 
 function initAudioEngine() {
   const soundBtn = document.getElementById('sound-toggle-btn');
+  const mobileSoundBtn = document.getElementById('mobile-sound-btn');
   const iconOn = soundBtn ? soundBtn.querySelector('.icon-sound-on') : null;
   const iconOff = soundBtn ? soundBtn.querySelector('.icon-sound-off') : null;
 
@@ -108,24 +110,25 @@ function initAudioEngine() {
     if (iconOff) iconOff.style.display = 'inline-block';
   }
 
-  if (soundBtn) {
-    soundBtn.addEventListener('click', () => {
-      soundEnabled = !soundEnabled;
-      localStorage.setItem('folio_sound', soundEnabled ? 'on' : 'off');
+  function toggleAudio() {
+    soundEnabled = !soundEnabled;
+    localStorage.setItem('folio_sound', soundEnabled ? 'on' : 'off');
 
-      if (iconOn && iconOff) {
-        iconOn.style.display = soundEnabled ? 'inline-block' : 'none';
-        iconOff.style.display = soundEnabled ? 'none' : 'inline-block';
-      }
+    if (iconOn && iconOff) {
+      iconOn.style.display = soundEnabled ? 'inline-block' : 'none';
+      iconOff.style.display = soundEnabled ? 'none' : 'inline-block';
+    }
 
-      if (soundEnabled) {
-        playSound('success');
-        showToast('Sound Effects Enabled');
-      } else {
-        showToast('Sound Effects Muted');
-      }
-    });
+    if (soundEnabled) {
+      playSound('success');
+      showToast('Sound Effects Enabled');
+    } else {
+      showToast('Sound Effects Muted');
+    }
   }
+
+  if (soundBtn) soundBtn.addEventListener('click', toggleAudio);
+  if (mobileSoundBtn) mobileSoundBtn.addEventListener('click', toggleAudio);
 }
 
 function playSound(type = 'click') {
@@ -178,12 +181,12 @@ function playSound(type = 'click') {
       osc.stop(now + 0.04);
     }
   } catch (err) {
-    // AudioContext blocked by browser policy until gesture
+    // Graceful fallback
   }
 }
 
 /* --------------------------------------------------------------------------
-   4. Particle Constellation Canvas
+   4. Mobile-Optimized Particle Constellation Canvas
    -------------------------------------------------------------------------- */
 function initParticleCanvas() {
   const canvas = document.getElementById('particle-canvas');
@@ -194,15 +197,18 @@ function initParticleCanvas() {
   let height = canvas.height = window.innerHeight;
 
   let particles = [];
-  const particleCount = Math.min(Math.floor(window.innerWidth / 28), 40);
+  // Responsive particle count: lighter on mobile for smooth 60fps
+  const isMobile = window.innerWidth < 768;
+  const particleCount = isMobile ? 18 : 36;
+  const connectDistance = isMobile ? 90 : 120;
 
   class Particle {
     constructor() {
       this.x = Math.random() * width;
       this.y = Math.random() * height;
-      this.vx = (Math.random() - 0.5) * 0.5;
-      this.vy = (Math.random() - 0.5) * 0.5;
-      this.radius = Math.random() * 1.8 + 1;
+      this.vx = (Math.random() - 0.5) * 0.45;
+      this.vy = (Math.random() - 0.5) * 0.45;
+      this.radius = Math.random() * 1.5 + 1;
     }
 
     update() {
@@ -216,7 +222,7 @@ function initParticleCanvas() {
     draw() {
       ctx.beginPath();
       ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
-      ctx.fillStyle = 'rgba(148, 163, 184, 0.35)';
+      ctx.fillStyle = 'rgba(148, 163, 184, 0.3)';
       ctx.fill();
     }
   }
@@ -237,11 +243,11 @@ function initParticleCanvas() {
         const dy = particles[i].y - particles[j].y;
         const dist = Math.sqrt(dx * dx + dy * dy);
 
-        if (dist < 120) {
+        if (dist < connectDistance) {
           ctx.beginPath();
           ctx.moveTo(particles[i].x, particles[i].y);
           ctx.lineTo(particles[j].x, particles[j].y);
-          ctx.strokeStyle = `rgba(148, 163, 184, ${0.16 * (1 - dist / 120)})`;
+          ctx.strokeStyle = `rgba(148, 163, 184, ${0.15 * (1 - dist / connectDistance)})`;
           ctx.lineWidth = 0.75;
           ctx.stroke();
         }
@@ -320,7 +326,7 @@ function processUploadedImage(file) {
     try {
       localStorage.setItem('folio_custom_avatar', base64Img);
     } catch (err) {
-      console.warn('Image too large for localStorage, applied in session.');
+      console.warn('Image stored for session.');
     }
     playSound('success');
     showToast('Profile photo updated successfully!');
@@ -354,14 +360,19 @@ function closeAvatarModal() {
 function initViewSwitcher() {
   const toggleBtn = document.getElementById('toggle-resume-view-btn');
   const switchToDocBtn = document.getElementById('switch-to-doc-btn');
+  const mobileSwitchDocBtn = document.getElementById('mobile-switch-doc-btn');
   const exitDocBtn = document.getElementById('exit-resume-mode-btn');
   const portfolioView = document.getElementById('portfolio-view');
   const resumeDocView = document.getElementById('resume-document-view');
+  const mobileDrawer = document.getElementById('mobile-drawer');
+  const mobileMenuBtn = document.getElementById('mobile-menu-btn');
 
   function showResumeDoc() {
     playSound('pop');
     portfolioView.style.display = 'none';
     resumeDocView.style.display = 'block';
+    if (mobileDrawer) mobileDrawer.classList.remove('open');
+    if (mobileMenuBtn) mobileMenuBtn.classList.remove('open');
     window.scrollTo({ top: 0, behavior: 'smooth' });
     showToast('Switched to Classic Document View');
   }
@@ -370,6 +381,8 @@ function initViewSwitcher() {
     playSound('pop');
     portfolioView.style.display = 'block';
     resumeDocView.style.display = 'none';
+    if (mobileDrawer) mobileDrawer.classList.remove('open');
+    if (mobileMenuBtn) mobileMenuBtn.classList.remove('open');
     window.scrollTo({ top: 0, behavior: 'smooth' });
     showToast('Switched to Interactive Portfolio');
   }
@@ -385,6 +398,7 @@ function initViewSwitcher() {
   }
 
   if (switchToDocBtn) switchToDocBtn.addEventListener('click', showResumeDoc);
+  if (mobileSwitchDocBtn) mobileSwitchDocBtn.addEventListener('click', showResumeDoc);
   if (exitDocBtn) exitDocBtn.addEventListener('click', showPortfolio);
 }
 
@@ -555,13 +569,13 @@ function openProjectModal(projectId) {
     subtitleEl.textContent = project.category;
     descEl.textContent = project.desc;
 
-    let detailsHTML = '<h4 style="margin-bottom: 0.5rem; font-size: 0.95rem; color: var(--text-primary);">Key Architectural Highlights:</h4><ul style="list-style: disc; padding-left: 1.2rem; margin-bottom: 1.2rem; color: var(--text-secondary); font-size: 0.88rem; display: flex; flex-direction: column; gap: 0.4rem;">';
+    let detailsHTML = '<h4 style="margin-bottom: 0.5rem; font-size: 0.92rem; color: var(--text-primary);">Key Architectural Highlights:</h4><ul style="list-style: disc; padding-left: 1.2rem; margin-bottom: 1.2rem; color: var(--text-secondary); font-size: 0.85rem; display: flex; flex-direction: column; gap: 0.4rem;">';
     project.highlights.forEach(h => {
       detailsHTML += `<li>${h}</li>`;
     });
     detailsHTML += '</ul>';
 
-    detailsHTML += '<h4 style="margin-bottom: 0.5rem; font-size: 0.95rem; color: var(--text-primary);">Technologies & Tools Utilized:</h4><div style="display: flex; flex-wrap: wrap; gap: 0.5rem;">';
+    detailsHTML += '<h4 style="margin-bottom: 0.5rem; font-size: 0.92rem; color: var(--text-primary);">Technologies & Tools:</h4><div style="display: flex; flex-wrap: wrap; gap: 0.45rem;">';
     project.tools.forEach(t => {
       detailsHTML += `<span class="tech-pill" style="color: var(--accent-primary); font-weight: 600;">${t}</span>`;
     });
@@ -670,7 +684,7 @@ function displayFeedback(isCorrect, explanation) {
 
   feedbackBox.style.display = 'flex';
   feedbackBox.className = `decision-feedback ${isCorrect ? 'feedback-correct' : 'feedback-incorrect'}`;
-  iconEl.innerHTML = isCorrect ? '<i class="fa-solid fa-circle-check" style="font-size: 1.4rem;"></i>' : '<i class="fa-solid fa-circle-xmark" style="font-size: 1.4rem;"></i>';
+  iconEl.innerHTML = isCorrect ? '<i class="fa-solid fa-circle-check" style="font-size: 1.3rem;"></i>' : '<i class="fa-solid fa-circle-xmark" style="font-size: 1.3rem;"></i>';
   textEl.innerHTML = `${isCorrect ? '<strong>Accurate Assessment!</strong> ' : '<strong>Incorrect Analysis!</strong> '}${explanation}`;
 }
 
@@ -740,7 +754,7 @@ function showToast(message) {
    -------------------------------------------------------------------------- */
 function initScrollSpy() {
   const sections = document.querySelectorAll('section[id]');
-  const navItems = document.querySelectorAll('.nav-links .nav-item');
+  const navItems = document.querySelectorAll('.nav-links .nav-item, .mobile-drawer .mobile-nav-link');
 
   window.addEventListener('scroll', () => {
     let current = '';
