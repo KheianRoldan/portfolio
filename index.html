@@ -2,11 +2,16 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
   <title>Kheian Roldan | Information Systems Student & Web Designer</title>
   <meta name="description" content="Personal Portfolio and Interactive Resume of Kheian Roldan, an Information Systems student at CHMSU passionate about web design, programming, and cybersecurity.">
   <meta name="keywords" content="Kheian Roldan, Information Systems, CHMSU, Web Design, Portfolio, Cybersecurity, Phishing Simulator, Resume">
   <meta name="author" content="Kheian Roldan">
+
+  <!-- Mobile Theme Color Bar -->
+  <meta name="theme-color" content="#0b0d14">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 
   <!-- Google Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -70,16 +75,16 @@
           </div>
         </div>
 
-        <!-- Sound FX Toggle -->
-        <button id="sound-toggle-btn" class="btn-action-icon" title="Toggle Sound Effects" aria-label="Toggle UI Audio">
+        <!-- Sound FX Toggle (Desktop only) -->
+        <button id="sound-toggle-btn" class="btn-action-icon hide-mobile-btn" title="Toggle Sound Effects" aria-label="Toggle UI Audio">
           <i class="fa-solid fa-volume-high icon-sound-on"></i>
           <i class="fa-solid fa-volume-xmark icon-sound-off" style="display: none;"></i>
         </button>
 
         <!-- View Mode Switcher -->
-        <button id="toggle-resume-view-btn" class="btn-action-icon btn-resume-mode" title="Toggle Classic Resume View" aria-label="Toggle Resume View">
+        <button id="toggle-resume-view-btn" class="btn-action-icon btn-resume-mode hide-mobile-btn" title="Toggle Classic Resume View" aria-label="Toggle Resume View">
           <i class="fa-solid fa-file-lines"></i>
-          <span class="action-text-hide">Resume</span>
+          <span>Resume</span>
         </button>
 
         <!-- Theme Toggle Button -->
@@ -88,10 +93,10 @@
           <i class="fa-solid fa-moon icon-moon"></i>
         </button>
 
-        <!-- Print Action -->
-        <button id="print-btn" class="btn btn-sm btn-outline btn-print-header" title="Print or Save as PDF" onclick="window.print()">
+        <!-- Print Action (Desktop only) -->
+        <button id="print-btn" class="btn btn-sm btn-outline btn-print-header hide-mobile-btn" title="Print or Save as PDF" onclick="window.print()">
           <i class="fa-solid fa-print"></i>
-          <span class="action-text-hide">Print</span>
+          <span>Print</span>
         </button>
 
         <!-- Mobile Menu Toggle Button -->
@@ -106,14 +111,31 @@
     <!-- Mobile Drawer Menu Overlay -->
     <div class="mobile-drawer" id="mobile-drawer">
       <div class="mobile-drawer-inner">
-        <a href="#about" class="mobile-nav-link"><i class="fa-solid fa-user"></i> About Me</a>
-        <a href="#projects" class="mobile-nav-link"><i class="fa-solid fa-diagram-project"></i> Projects & Labs</a>
-        <a href="#simulator" class="mobile-nav-link"><i class="fa-solid fa-shield-virus"></i> Security Lab</a>
-        <a href="#tools" class="mobile-nav-link"><i class="fa-solid fa-briefcase"></i> Tools & Stack</a>
-        <a href="#education" class="mobile-nav-link"><i class="fa-solid fa-university"></i> Education</a>
-        <a href="#certificates" class="mobile-nav-link"><i class="fa-solid fa-award"></i> Certificates</a>
-        <a href="#skills" class="mobile-nav-link"><i class="fa-solid fa-gear"></i> Core Skills</a>
-        <a href="#contact" class="mobile-nav-link"><i class="fa-solid fa-paper-plane"></i> Contact</a>
+        <div class="mobile-drawer-links">
+          <a href="#about" class="mobile-nav-link"><i class="fa-solid fa-user"></i> About Me</a>
+          <a href="#projects" class="mobile-nav-link"><i class="fa-solid fa-diagram-project"></i> Projects & Labs</a>
+          <a href="#simulator" class="mobile-nav-link"><i class="fa-solid fa-shield-virus"></i> Security Lab</a>
+          <a href="#tools" class="mobile-nav-link"><i class="fa-solid fa-briefcase"></i> Tools & Stack</a>
+          <a href="#education" class="mobile-nav-link"><i class="fa-solid fa-university"></i> Education</a>
+          <a href="#certificates" class="mobile-nav-link"><i class="fa-solid fa-award"></i> Certificates</a>
+          <a href="#skills" class="mobile-nav-link"><i class="fa-solid fa-gear"></i> Core Skills</a>
+          <a href="#contact" class="mobile-nav-link"><i class="fa-solid fa-paper-plane"></i> Contact</a>
+        </div>
+        
+        <!-- Mobile Quick Action Shortcuts in Drawer -->
+        <div class="mobile-drawer-actions">
+          <button class="btn btn-sm btn-primary btn-full" id="mobile-switch-doc-btn">
+            <i class="fa-solid fa-file-lines"></i> View Classic Resume
+          </button>
+          <div class="mobile-drawer-action-row">
+            <button class="btn btn-sm btn-outline" id="mobile-sound-btn">
+              <i class="fa-solid fa-volume-high"></i> Sound FX
+            </button>
+            <button class="btn btn-sm btn-outline" onclick="window.print()">
+              <i class="fa-solid fa-print"></i> Print / PDF
+            </button>
+          </div>
+        </div>
       </div>
     </div>
   </header>
@@ -128,7 +150,7 @@
           <div class="hero-header-banner">
             <div class="banner-status-badge">
               <span class="status-dot pulse"></span>
-              <span>Available for internships, projects & tech collaborations</span>
+              <span>Available for internships & collaborations</span>
             </div>
           </div>
 
@@ -160,15 +182,15 @@
               <div class="hero-cta-group">
                 <a href="#projects" class="btn btn-primary">
                   <i class="fa-solid fa-diagram-project"></i>
-                  <span>Explore Projects</span>
+                  <span>Projects</span>
                 </a>
                 <a href="#simulator" class="btn btn-secondary">
                   <i class="fa-solid fa-shield-virus"></i>
-                  <span>Security Sandbox</span>
+                  <span>Security Lab</span>
                 </a>
                 <button class="btn btn-outline" id="switch-to-doc-btn">
                   <i class="fa-solid fa-id-card"></i>
-                  <span>Classic Resume</span>
+                  <span>Resume</span>
                 </button>
                 <button class="btn btn-outline" id="copy-email-btn" data-email="kheianroldan1@gmail.com">
                   <i class="fa-solid fa-copy"></i>
@@ -210,7 +232,7 @@
           <p class="section-subtitle">Practical applications of Information Systems concepts, UI design, diagrams, and security principles.</p>
         </div>
 
-        <!-- Filter Tabs -->
+        <!-- Filter Tabs (Scrollable on Mobile) -->
         <div class="projects-filter-bar">
           <button class="filter-tab active" data-filter="all">All Projects</button>
           <button class="filter-tab" data-filter="web">Web & UI Design</button>
@@ -242,7 +264,7 @@
                 <span class="tech-pill">UI Wireframing</span>
               </div>
               <div class="project-actions">
-                <button class="btn btn-sm btn-primary" onclick="openProjectModal('student-portal')">
+                <button class="btn btn-sm btn-primary btn-full-mobile" onclick="openProjectModal('student-portal')">
                   <i class="fa-solid fa-circle-info"></i> Details & Diagram
                 </button>
               </div>
@@ -271,7 +293,7 @@
               </div>
               <div class="project-actions">
                 <a href="#simulator" class="btn btn-sm btn-primary">
-                  <i class="fa-solid fa-play"></i> Try Simulator Below
+                  <i class="fa-solid fa-play"></i> Try Sandbox
                 </a>
                 <button class="btn btn-sm btn-outline" onclick="openProjectModal('phishing-lab')">
                   <i class="fa-solid fa-file-lines"></i> Case Study
@@ -301,7 +323,7 @@
                 <span class="tech-pill">Canvas API</span>
               </div>
               <div class="project-actions">
-                <button class="btn btn-sm btn-primary" onclick="openProjectModal('portfolio-engine')">
+                <button class="btn btn-sm btn-primary btn-full-mobile" onclick="openProjectModal('portfolio-engine')">
                   <i class="fa-solid fa-code"></i> Architecture
                 </button>
               </div>
@@ -320,12 +342,12 @@
                 <i class="fa-solid fa-shield-cat"></i>
               </div>
               <div>
-                <h2>Interactive Cybersecurity Lab: Phishing Email Inspector</h2>
-                <p class="sandbox-header-desc">Apply Cybersecurity Awareness principles — inspect the simulated inbox, spot indicators of compromise, and test your defense readiness.</p>
+                <h2>Cybersecurity Lab: Phishing Email Inspector</h2>
+                <p class="sandbox-header-desc">Inspect simulated inbox messages, detect red flags, and test your defense readiness.</p>
               </div>
             </div>
             <div class="sandbox-score-badge">
-              <span>Security Score:</span>
+              <span>Score:</span>
               <strong id="security-score">0 / 3 Verified</strong>
             </div>
           </div>
@@ -370,7 +392,7 @@
                   <strong class="mail-field-val" id="mail-view-sub">Action Required: Immediate Password Reset</strong>
                 </div>
                 <div class="mail-field">
-                  <span class="mail-field-label">Recipient:</span>
+                  <span class="mail-field-label">To:</span>
                   <span class="mail-field-val">kheianroldan1@gmail.com</span>
                 </div>
               </div>
@@ -554,7 +576,7 @@
                     </div>
                   </div>
 
-                  <div class="skill-badges" style="margin-top: 1rem;">
+                  <div class="skill-badges" style="margin-top: 0.85rem;">
                     <div class="skill-chip active-chip">
                       <i class="fa-solid fa-palette"></i>
                       <span>Web Design</span>
@@ -866,14 +888,14 @@
     <div class="resume-view-bar no-print">
       <div class="resume-bar-info">
         <i class="fa-solid fa-eye"></i>
-        <span>Document Preview Mode (Exact visual layout matching original design)</span>
+        <span>Document Preview Mode</span>
       </div>
       <div class="resume-bar-actions">
         <button class="btn btn-sm btn-primary" onclick="window.print()">
-          <i class="fa-solid fa-print"></i> Print / Save PDF
+          <i class="fa-solid fa-print"></i> Print / PDF
         </button>
         <button class="btn btn-sm btn-secondary" id="exit-resume-mode-btn">
-          <i class="fa-solid fa-arrow-left"></i> Back to Interactive Portfolio
+          <i class="fa-solid fa-arrow-left"></i> Back to Interactive
         </button>
       </div>
     </div>
@@ -1035,7 +1057,7 @@
         </div>
       </div>
       <div class="modal-footer">
-        <button class="btn btn-primary" onclick="closeCertModal()">Close Preview</button>
+        <button class="btn btn-primary btn-full-mobile" onclick="closeCertModal()">Close Preview</button>
       </div>
     </div>
   </div>
@@ -1056,7 +1078,7 @@
         </div>
       </div>
       <div class="modal-footer">
-        <button class="btn btn-secondary" onclick="closeProjectModal()">Close</button>
+        <button class="btn btn-secondary btn-full-mobile" onclick="closeProjectModal()">Close</button>
       </div>
     </div>
   </div>
@@ -1078,7 +1100,7 @@
         </div>
         <p class="upload-hint">Supported formats: JPG, PNG, WEBP. Automatically saved in your browser storage.</p>
       </div>
-      <div class="modal-footer">
+      <div class="modal-footer modal-footer-mobile-stack">
         <button class="btn btn-outline" onclick="resetDefaultAvatar()">Reset to Default</button>
         <button class="btn btn-primary" onclick="closeAvatarModal()">Done</button>
       </div>
